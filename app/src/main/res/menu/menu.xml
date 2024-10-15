@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+  <item
+    android:id="@+id/homeFragment"
+    android:title="@string/home"
+    android:icon="@drawable/icon_home_state"/>
+
+  <item
+    android:id="@+id/upcomingFragment"
+    android:title="@string/upcoming"
+    android:icon="@drawable/icon_upcoming_state"/>
+
+  <item
+    android:id="@+id/finishedFragment"
+    android:title="@string/finished"
+    android:icon="@drawable/icon_finished_state"/>
+
+  <item
+    android:id="@+id/settingsFragment"
+    android:title="@string/settings"
+    android:icon="@drawable/baseline_settings_24"/>
+</menu>

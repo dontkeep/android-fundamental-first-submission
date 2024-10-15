@@ -1,0 +1,25 @@
+<resources >
+  <style name="Base.Theme.AndroidFundamentalFirstSubmission" parent="Theme.Material3.DayNight">
+    <!-- Primary colors -->
+    <item name="colorPrimary">@color/colorPrimary</item>
+    <item name="colorPrimaryVariant">@color/colorPrimaryVariant</item>
+    <item name="colorOnPrimary">@color/colorOnPrimary</item>
+
+    <!-- Secondary colors -->
+    <item name="colorSecondary">@color/colorSecondary</item>
+    <item name="colorSecondaryVariant">@color/colorSecondaryVariant</item>
+    <item name="colorOnSecondary">@color/colorOnSecondary</item>
+
+    <!-- Day mode surfaces -->
+    <item name="colorSurface">@color/colorSurfaceLight</item>
+    <item name="colorOnSurface">@color/colorOnSurfaceLight</item>
+
+    <!-- Error colors -->
+    <item name="colorError">@color/colorError</item>
+    <item name="colorOnError">@color/colorOnError</item>
+  </style>
+
+
+  <style name="Theme.AndroidFundamentalFirstSubmission"
+    parent="Base.Theme.AndroidFundamentalFirstSubmission" />
+</resources>

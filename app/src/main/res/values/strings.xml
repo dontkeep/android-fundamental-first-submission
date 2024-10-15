@@ -1,0 +1,30 @@
+<resources>
+  <string name="app_name">Android Fundamental First Submission</string>
+  <string name="dicoding_event">Dicoding Event</string>
+  <string name="upcoming_events">Upcoming Events</string>
+  <string name="finished_events">Finished Events</string>
+  <string name="content_image">content image</string>
+  <string name="title">Title</string>
+  <string name="category">Category</string>
+  <string name="summary">Summary</string>
+  <string name="home">Home</string>
+  <string name="upcoming">Upcoming</string>
+  <string name="finished">Finished</string>
+  <string name="description">Description</string>
+  <string name="event_description">Event Description</string>
+  <string name="date_and_time">Date and Time</string>
+  <string name="event_start">Event Start</string>
+  <string name="quota">Quota</string>
+  <string name="city_name">City Name</string>
+  <string name="event_owner">Event Owner</string>
+  <string name="register">Register</string>
+  <string name="search_events">Search Events</string>
+  <string name="search_result">Search Result</string>
+  <string name="bottom_navigation">Bottom Navigation</string>
+  <string name="spacer">Spacer</string>
+  <!-- TODO: Remove or change this placeholder text -->
+  <string name="hello_blank_fragment">Hello blank fragment</string>
+  <string name="favourite">Favourite</string>
+  <string name="settings">Settings</string>
+  <string name="favourite_events">Favourite Events</string>
+</resources>
