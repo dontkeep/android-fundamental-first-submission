@@ -1,8 +1,11 @@
 package com.nicelydone.androidfundamentalfirstsubmission.ui.adapter
 
+import android.content.Context
 import android.content.Intent
+import android.net.ConnectivityManager
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -11,17 +14,15 @@ import com.nicelydone.androidfundamentalfirstsubmission.connection.response.List
 import com.nicelydone.androidfundamentalfirstsubmission.databinding.ItemHorizontalBinding
 import com.nicelydone.androidfundamentalfirstsubmission.ui.activity.detail.DetailActivity
 
-class UpcomingAdapter: ListAdapter<ListEventsItem, UpcomingAdapter.ViewHolder>(DIFF_CALLBACK) {
+class UpcomingAdapter(private val onEventClick: (Int) -> Unit): ListAdapter<ListEventsItem, UpcomingAdapter.ViewHolder>(DIFF_CALLBACK) {
    class ViewHolder(private val binding: ItemHorizontalBinding) : RecyclerView.ViewHolder(binding.root){
-      fun bind(eventItem: ListEventsItem){
+      fun bind(eventItem: ListEventsItem, onEventClick: (Int) -> Unit){
          binding.apply {
             itemTitle.text = eventItem.name
             Glide.with(itemImage.context).load(eventItem.imageLogo).into(itemImage)
 
             root.setOnClickListener {
-               val intent = Intent(root.context, DetailActivity::class.java)
-               intent.putExtra("id", eventItem.id)
-               root.context.startActivity(intent)
+               eventItem.id?.let { it1 -> onEventClick(it1) }
             }
          }
       }
@@ -34,7 +35,7 @@ class UpcomingAdapter: ListAdapter<ListEventsItem, UpcomingAdapter.ViewHolder>(D
 
    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
       val item = getItem(position)
-      holder.bind(item)
+      holder.bind(item, onEventClick)
    }
 
    companion object {

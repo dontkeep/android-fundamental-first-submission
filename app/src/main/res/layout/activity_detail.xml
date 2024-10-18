@@ -53,6 +53,7 @@
           android:contentDescription="@string/content_image"
           />
       </androidx.cardview.widget.CardView>
+
       <TextView
         android:id="@+id/detail_title"
         android:layout_width="wrap_content"
@@ -166,10 +167,24 @@
     android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:text="@string/register"
-    android:layout_margin="16dp"
+    android:layout_marginStart="16dp"
+    android:layout_marginBottom="16dp"
     style="@style/Widget.Material3.Button.IconButton.Filled"
     app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintEnd_toStartOf="@id/favouriteButton"
     app:layout_constraintStart_toStartOf="parent"
+    />
+
+  <Button
+    android:id="@+id/favouriteButton"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="16dp"
+    android:layout_marginEnd="16dp"
+    style="?attr/materialIconButtonFilledTonalStyle"
+    app:icon="@drawable/baseline_favorite_border_24"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toEndOf="@id/registerButton"
     />
 </androidx.constraintlayout.widget.ConstraintLayout>

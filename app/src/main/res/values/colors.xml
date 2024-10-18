@@ -19,4 +19,7 @@
 
   <color name="colorError">#B00020</color>
   <color name="colorOnError">#FFFFFF</color>
+
+  <color name="colorFavourite">#DB7093</color>
+  <color name="grey">#808080</color>
 </resources>

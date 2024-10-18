@@ -7,11 +7,16 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nicelydone.androidfundamentalfirstsubmission.connection.response.EventResponse
 import com.nicelydone.androidfundamentalfirstsubmission.connection.retrofit.ApiConfig
+import com.nicelydone.androidfundamentalfirstsubmission.storage.repository.EventRepo
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Response
+import javax.inject.Inject
 
-class HomeViewModel: ViewModel() {
+@HiltViewModel
+class HomeViewModel @Inject constructor(private val eventRepo: EventRepo): ViewModel() {
    private val _activeEventList = MutableLiveData<EventResponse>()
    var activeEventList: LiveData<EventResponse> = _activeEventList
 
@@ -32,6 +37,7 @@ class HomeViewModel: ViewModel() {
 
    init {
       _loading.value = false
+      fetchEvents()
    }
 
    fun fetchEvents() {
@@ -41,55 +47,33 @@ class HomeViewModel: ViewModel() {
       }
    }
 
-   // 1 = active or upcoming, 0 = finished, -1 = all
    fun getEventList(active: Int, limit: Int = 40){
       _loading.value = true
-      if (active == 1) {
-         val client = ApiConfig.getApiService().getEvents(active, limit)
-         client.enqueue(object: retrofit2.Callback<EventResponse>{
-            override fun onResponse(call: Call<EventResponse>, response: Response<EventResponse>) {
-               if(response.isSuccessful){
-                  _loading.value = false
-                  _error.value = null
+      viewModelScope.launch {
+         try {
+            val eventResponse = eventRepo.getAllEventsFromApi(active, limit).first()
+            _loading.value = false
+            _error.value = null
+
+            when (active) {
+               1 -> {
                   if (limit != 40) {
-                     _activeEventListSpecificNum.value = response.body()
-                  }else {
-                     _activeEventList.value = response.body()
+                     _activeEventListSpecificNum.value = eventResponse
+                  } else {
+                     _activeEventList.value = eventResponse}
+               }
+               0 -> {
+                  if (limit != 40) {
+                     _finishEventListSpecificNum.value = eventResponse
+                  } else {
+                     _finishEventList.value = eventResponse
                   }
-               } else{
-                  _loading.value = false
-                  _error.value = "Failed to fetch data. Please try again."
                }
             }
-
-            override fun onFailure(call: Call<EventResponse>, t: Throwable) {
-               _loading.value = false
-               _error.value = "Network error. Please check your connection."
-            }
-
-         })
-      }else if (active == 0){
-         val client = ApiConfig.getApiService().getEvents(active, limit)
-         client.enqueue(object: retrofit2.Callback<EventResponse>{
-            override fun onResponse(call: Call<EventResponse>, response: Response<EventResponse>) {
-               if(response.isSuccessful){
-                  _loading.value = false
-                  if (limit != 40) {
-                     _finishEventListSpecificNum.value = response.body()
-                  }else {
-                     _finishEventList.value = response.body()
-                  }
-               } else{
-                  _loading.value = false
-                  Log.d("MainViewModel", "onFailure: ${response.message()}")
-               }
-            }
-
-            override fun onFailure(call: Call<EventResponse>, t: Throwable) {
-               _loading.value = false
-               Log.d("TAG", "onFailure: ${t.message}")
-            }
-         })
+         } catch (e: Exception) {
+            _loading.value = false
+            _error.value = "Failed to fetch data: ${e.message}"
+         }
       }
    }
 }

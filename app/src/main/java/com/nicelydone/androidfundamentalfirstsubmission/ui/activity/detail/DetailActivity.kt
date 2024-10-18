@@ -1,25 +1,40 @@
 package com.nicelydone.androidfundamentalfirstsubmission.ui.activity.detail
 
+import android.content.Context
 import android.content.Intent
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.nicelydone.androidfundamentalfirstsubmission.R
+import com.nicelydone.androidfundamentalfirstsubmission.connection.response.Event
 import com.nicelydone.androidfundamentalfirstsubmission.databinding.ActivityDetailBinding
+import com.nicelydone.androidfundamentalfirstsubmission.storage.entity.FavEventEntity
 import com.nicelydone.androidfundamentalfirstsubmission.viewmodel.DetailViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class DetailActivity : AppCompatActivity() {
    private lateinit var binding: ActivityDetailBinding
    private lateinit var viewModel: DetailViewModel
+   private var currentEvent: Event? = null
+   private var isFavorited: Boolean = false
 
    override fun onCreate(savedInstanceState: Bundle?) {
       super.onCreate(savedInstanceState)
@@ -37,21 +52,28 @@ class DetailActivity : AppCompatActivity() {
          insets
       }
       val id = intent.getIntExtra("id", 0)
-
       viewModel = ViewModelProvider(this)[DetailViewModel::class.java]
+
+      lifecycleScope.launch {
+         isFavorited = viewModel.isEventFavorited(id).first()
+         updateFavoriteButtonIcon(isFavorited)
+      }
+
+
       viewModel.getDetail(id)
-      viewModel.detailResult.observe(this){ item ->
-         binding.detailTitle.text = item.event?.name ?: "No Name"
-         binding.detailOwner.text = item.event?.ownerName ?: "No Owner"
+      viewModel.detailResult.observe(this) { item ->
+         currentEvent = item.event!!
+         binding.detailTitle.text = item.event.name ?: "No Name"
+         binding.detailOwner.text = item.event.ownerName ?: "No Owner"
 
          binding.detailCategory.text = buildString {
             append("● ")
-            append(item.event?.category)
+            append(item.event.category)
          }
 
          binding.detailCity.text = buildString {
             append("● ")
-            append(item.event?.cityName)
+            append(item.event.cityName)
          }
 
          binding.detailQuota.text =
@@ -62,33 +84,56 @@ class DetailActivity : AppCompatActivity() {
                }.toString())
             }
 
-         binding.detailTime.text = item.event?.beginTime ?: "No Time"
+         binding.detailTime.text = item.event.beginTime ?: "No Time"
 
          binding.eventDesc.text = HtmlCompat.fromHtml(
-            item.event?.description ?: "No Description",
+            item.event.description ?: "No Description",
             HtmlCompat.FROM_HTML_MODE_LEGACY
          ).toString()
 
-         Glide.with(binding.detailImage.context).load(item.event?.imageLogo).centerCrop().into(binding.detailImage)
+         Glide.with(binding.detailImage.context).load(item.event.imageLogo).centerCrop()
+            .into(binding.detailImage)
 
          binding.registerButton.setOnClickListener {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(item.event?.link))
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(item.event.link))
             startActivity(intent)
+         }
+
+      }
+
+      binding.favouriteButton.setOnClickListener {
+         isFavorited = !isFavorited
+         updateFavoriteButtonIcon(isFavorited)
+         currentEvent?.let {
+            viewModel.toggleFavorite(it, isFavorited)
          }
       }
 
-      viewModel.error.observe(this){ errorMessage ->
+      viewModel.error.observe(this) { errorMessage ->
          errorMessage?.let {
             Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
          }
       }
 
-      viewModel.loading.observe(this){ loading ->
-         if(loading){
+      viewModel.loading.observe(this) { loading ->
+         if (loading) {
             binding.loading.visibility = View.VISIBLE
-         }else{
+         } else {
             binding.loading.visibility = View.GONE
          }
+      }
+   }
+
+   private fun updateFavoriteButtonIcon(isFavorited: Boolean) {
+      if (isFavorited) {
+         binding.favouriteButton.setBackgroundColor(
+            ContextCompat.getColor(
+               this,
+               R.color.colorFavourite
+            )
+         )
+      } else {
+         binding.favouriteButton.setBackgroundColor(ContextCompat.getColor(this, R.color.grey))
       }
    }
 
@@ -98,6 +143,7 @@ class DetailActivity : AppCompatActivity() {
             onBackPressedDispatcher.onBackPressed()
             true
          }
+
          else -> super.onOptionsItemSelected(item)
       }
    }

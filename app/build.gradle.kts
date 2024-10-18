@@ -1,8 +1,9 @@
 plugins {
    alias(libs.plugins.android.application)
    alias(libs.plugins.jetbrains.kotlin.android)
-   id("kotlin-kapt")
+   id("com.google.devtools.ksp")
    id("kotlin-parcelize")
+   id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -64,4 +65,14 @@ dependencies {
    testImplementation(libs.junit)
    androidTestImplementation(libs.androidx.junit)
    androidTestImplementation(libs.androidx.espresso.core)
+
+   implementation("androidx.room:room-runtime:2.6.1")
+   ksp("androidx.room:room-compiler:2.6.1")
+   implementation("androidx.room:room-ktx:2.6.1")
+
+   implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1")
+
+   implementation("com.google.dagger:hilt-android:2.51.1")
+   ksp("com.google.dagger:hilt-android-compiler:2.51.1")
+
 }

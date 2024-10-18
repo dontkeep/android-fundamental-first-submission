@@ -1,24 +1,36 @@
 package com.nicelydone.androidfundamentalfirstsubmission.ui.fragment.home
 
+import android.content.Context
 import android.content.Intent
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.nicelydone.androidfundamentalfirstsubmission.databinding.FragmentHomeBinding
+import com.nicelydone.androidfundamentalfirstsubmission.ui.activity.detail.DetailActivity
 import com.nicelydone.androidfundamentalfirstsubmission.ui.activity.searchresult.SearchResultActivity
 import com.nicelydone.androidfundamentalfirstsubmission.ui.adapter.MultiAdapter
 import com.nicelydone.androidfundamentalfirstsubmission.ui.adapter.UpcomingAdapter
+import com.nicelydone.androidfundamentalfirstsubmission.viewmodel.DetailViewModel
 import com.nicelydone.androidfundamentalfirstsubmission.viewmodel.HomeViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class HomeFragment : Fragment() {
    private var _binding: FragmentHomeBinding? = null
    private val binding get() = _binding!!
    private lateinit var viewModel: HomeViewModel
+   private lateinit var detailViewModel: DetailViewModel
 
    override fun onCreateView(
       inflater: LayoutInflater, container: ViewGroup?,
@@ -33,6 +45,7 @@ class HomeFragment : Fragment() {
 
       setupRecyclerView()
       viewModel = ViewModelProvider(this)[HomeViewModel::class.java]
+      detailViewModel = ViewModelProvider(this)[DetailViewModel::class.java]
 
       viewModel.fetchEvents()
 
@@ -53,18 +66,46 @@ class HomeFragment : Fragment() {
 
       viewModel.error.observe(viewLifecycleOwner){ errorMessage ->
          errorMessage?.let {
-            Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "No Internet Connection", Toast.LENGTH_SHORT).show()
          }
       }
 
       setupSearch()
    }
 
+   private fun isNetworkAvailable(): Boolean {
+      val connectivityManager = requireContext().getSystemService(ConnectivityManager::class.java)
+      val networkCapabilities = connectivityManager.activeNetwork ?: return false
+      val activeNetwork = connectivityManager.getNetworkCapabilities(networkCapabilities) ?: return false
+      return activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||
+          activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) ||
+          activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)
+   }
+
    private fun setupRecyclerView(){
       binding.finishedRv.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-      binding.finishedRv.adapter = MultiAdapter()
+      binding.finishedRv.adapter = MultiAdapter(){ eventId ->
+         handleEventClick(eventId)
+      }
       binding.upcomingRv.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-      binding.upcomingRv.adapter = UpcomingAdapter()
+      binding.upcomingRv.adapter = UpcomingAdapter { eventId ->
+         handleEventClick(eventId)
+      }
+   }
+
+   private fun handleEventClick(eventId: Int) {
+      lifecycleScope.launch {
+         val isFavorited = detailViewModel.isEventFavorited(eventId).first()
+         val isNetworkAvailable = isNetworkAvailable()
+
+         if (!isNetworkAvailable && !isFavorited) {
+            Toast.makeText(requireContext(), "No Internet Connection and Event Not Favorited", Toast.LENGTH_SHORT).show()
+         } else {
+            val intent = Intent(requireContext(), DetailActivity::class.java)
+            intent.putExtra("id", eventId)
+            startActivity(intent)
+         }
+      }
    }
 
    private fun setupSearch(){
