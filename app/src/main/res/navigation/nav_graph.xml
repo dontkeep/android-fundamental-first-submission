@@ -27,18 +27,10 @@
     android:name="com.nicelydone.androidfundamentalfirstsubmission.ui.fragment.finished.FinishedFragment"
     android:label="fragment_finished"
     tools:layout="@layout/fragment_finished" >
-    <action
-      android:id="@+id/action_finishedFragment_to_settingsFragment2"
-      app:destination="@id/settingsFragment2" />
   </fragment>
   <fragment
     android:id="@+id/favFragment"
     android:name="com.nicelydone.androidfundamentalfirstsubmission.ui.fragment.favourite.FavFragment"
     android:label="fragment_fav"
     tools:layout="@layout/fragment_fav" />
-  <fragment
-    android:id="@+id/settingsFragment2"
-    android:name="com.nicelydone.androidfundamentalfirstsubmission.ui.fragment.settings.SettingsFragment"
-    android:label="fragment_settings"
-    tools:layout="@layout/fragment_settings" />
 </navigation>

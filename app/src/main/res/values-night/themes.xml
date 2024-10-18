@@ -14,6 +14,9 @@
     <item name="colorSurface">@color/colorSurfaceDark</item>
     <item name="colorOnSurface">@color/colorOnSurfaceDark</item>
 
+    <item name="android:textColorPrimary">@color/white</item>
+    <item name="android:textColorSecondary">@color/grey</item>
+
     <!-- Error colors (same as day mode) -->
     <item name="colorError">@color/colorError</item>
     <item name="colorOnError">@color/colorOnError</item>

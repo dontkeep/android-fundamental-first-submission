@@ -11,6 +11,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.nicelydone.androidfundamentalfirstsubmission.R
 import com.nicelydone.androidfundamentalfirstsubmission.databinding.ActivityMainBinding
+import com.nicelydone.androidfundamentalfirstsubmission.ui.fragment.settings.SettingsFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -40,5 +41,24 @@ class MainActivity : AppCompatActivity() {
       popupMenu.inflate(R.menu.menu)
       val menu = popupMenu.menu
       binding.bottomBar.setupWithNavController(menu, navController)
+
+      binding.bottomBar.setOnItemSelectedListener { position ->
+         when(position) {
+          0 -> navController.navigate(R.id.homeFragment)
+          1 -> navController.navigate(R.id.upcomingFragment)
+          2 -> navController.navigate(R.id.finishedFragment)
+          3 -> navController.navigate(R.id.favFragment)
+          else -> navController.navigate(R.id.homeFragment)
+         }
+      }
+
+      binding.settingButton.setOnClickListener {
+         showSettingsBottomSheet()
+      }
+   }
+
+   private fun showSettingsBottomSheet() {
+      val settingsBottomSheet = SettingsFragment()
+      settingsBottomSheet.show(supportFragmentManager, SettingsFragment.TAG)
    }
 }
