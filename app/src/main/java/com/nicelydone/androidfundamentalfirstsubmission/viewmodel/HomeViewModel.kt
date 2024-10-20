@@ -34,7 +34,6 @@ class HomeViewModel @Inject constructor(private val eventRepo: EventRepo) : View
 
    init {
       _loading.value = false
-      fetchEvents()
    }
 
    fun fetchEvents() {
@@ -67,6 +66,7 @@ class HomeViewModel @Inject constructor(private val eventRepo: EventRepo) : View
                }
             }
             Log.d("HomeViewModel", "Data is fetched : $eventResponse")
+            Log.d("HomeViewModel", "Loading is down : ${_loading.value}")
             _loading.value = false
             _error.value = null
          } catch (e: Exception) {

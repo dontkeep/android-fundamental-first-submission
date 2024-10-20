@@ -99,13 +99,14 @@ class FinishedFragment : Fragment() {
    private fun setupRecyclerView(viewModel: HomeViewModel) {
       binding.finishedRv2.layoutManager =
          LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-      binding.finishedRv2.adapter = MultiAdapter { eventId ->
+      val adapter = MultiAdapter { eventId ->
          handleEventClick(eventId)
       }
+      binding.finishedRv2.adapter = adapter
 
       viewModel.getEventList(0)
       viewModel.finishEventList.observe(viewLifecycleOwner) {
-         (binding.finishedRv2.adapter as MultiAdapter).submitList(it.listEvents)
+         adapter.submitList(it.listEvents)
       }
 
       viewModel.error.observe(viewLifecycleOwner) { errorMessage ->
