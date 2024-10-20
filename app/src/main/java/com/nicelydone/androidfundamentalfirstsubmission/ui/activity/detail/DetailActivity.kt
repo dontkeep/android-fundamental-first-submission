@@ -15,6 +15,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.nicelydone.androidfundamentalfirstsubmission.R
 import com.nicelydone.androidfundamentalfirstsubmission.connection.response.Event
 import com.nicelydone.androidfundamentalfirstsubmission.databinding.ActivityDetailBinding
@@ -87,7 +88,7 @@ class DetailActivity : AppCompatActivity() {
             HtmlCompat.FROM_HTML_MODE_LEGACY
          ).toString()
 
-         Glide.with(binding.imageDetail.context).load(item.event.imageLogo).centerCrop()
+         Glide.with(binding.imageDetail.context).load(item.event.imageLogo).apply(RequestOptions.placeholderOf(R.drawable.placeholder).error(R.drawable.placeholder)).centerCrop()
             .into(binding.imageDetail)
 
          binding.registerButton.setOnClickListener {

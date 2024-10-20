@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
+import com.nicelydone.androidfundamentalfirstsubmission.R
 import com.nicelydone.androidfundamentalfirstsubmission.databinding.ItemVerticalBinding
 import com.nicelydone.androidfundamentalfirstsubmission.storage.entity.FavEventEntity
 import com.nicelydone.androidfundamentalfirstsubmission.ui.activity.detail.DetailActivity
@@ -26,7 +28,10 @@ class FavouriteAdapter : ListAdapter<FavEventEntity, FavouriteAdapter.ViewHolder
             summaryVertical.ellipsize = TextUtils.TruncateAt.END
             summaryVertical.maxLines = 1
             itemCategory.text = eventItem.category
-            Glide.with(itemImage.context).load(eventItem.image).into(itemImage)
+            Glide.with(itemImage.context).load(eventItem.image).apply(
+               RequestOptions.placeholderOf(
+                  R.drawable.placeholder).error(R.drawable.placeholder)).centerCrop()
+               .into(itemImage)
 
             root.setOnClickListener {
                val intent = Intent(root.context, DetailActivity::class.java)

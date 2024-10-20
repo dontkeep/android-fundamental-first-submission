@@ -6,6 +6,8 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
+import com.nicelydone.androidfundamentalfirstsubmission.R
 import com.nicelydone.androidfundamentalfirstsubmission.connection.response.ListEventsItem
 import com.nicelydone.androidfundamentalfirstsubmission.databinding.ItemHorizontalBinding
 
@@ -16,7 +18,10 @@ class UpcomingAdapter(private val onEventClick: (Int) -> Unit) :
       fun bind(eventItem: ListEventsItem, onEventClick: (Int) -> Unit) {
          binding.apply {
             itemTitle.text = eventItem.name
-            Glide.with(imageItem.context).load(eventItem.imageLogo).into(imageItem)
+            Glide.with(imageItem.context).load(eventItem.imageLogo).apply(
+               RequestOptions.placeholderOf(
+                  R.drawable.placeholder).error(R.drawable.placeholder)).centerCrop()
+               .into(imageItem)
 
             root.setOnClickListener {
                eventItem.id?.let { it1 -> onEventClick(it1) }

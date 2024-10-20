@@ -100,7 +100,8 @@ class EventRepo @Inject constructor(
    }
 
    fun getAllEventsFromApi(active: Int, limit: Int): Flow<EventResponse> {
-      return flow {
+      return try{
+      flow {
          val response = eventApi.getEvents(active, limit).awaitResponse()
          if (response.isSuccessful) {
             emit(response.body()!!)
@@ -108,5 +109,10 @@ class EventRepo @Inject constructor(
             throw Exception("API call failed with code ${response.code()}")
          }
       }.flowOn(Dispatchers.IO)
+      } catch (e: Exception) {
+         flow {
+            emit(EventResponse(error = true, message = e.message))
+         }.flowOn(Dispatchers.IO)
+      }
    }
 }

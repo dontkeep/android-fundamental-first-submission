@@ -43,17 +43,14 @@ class HomeViewModel @Inject constructor(private val eventRepo: EventRepo) : View
       }
    }
 
-   fun getEventList(active: Int, limit: Int = 40) {
+   fun getEventList(active: Int, limit: Int = 20) {
       _loading.value = true
       viewModelScope.launch {
          try {
             val eventResponse = eventRepo.getAllEventsFromApi(active, limit).first()
-            _loading.value = false
-            _error.value = null
-
             when (active) {
                1 -> {
-                  if (limit != 40) {
+                  if (limit != 20) {
                      _activeEventListSpecificNum.value = eventResponse
                   } else {
                      _activeEventList.value = eventResponse
@@ -61,13 +58,15 @@ class HomeViewModel @Inject constructor(private val eventRepo: EventRepo) : View
                }
 
                0 -> {
-                  if (limit != 40) {
+                  if (limit != 20) {
                      _finishEventListSpecificNum.value = eventResponse
                   } else {
                      _finishEventList.value = eventResponse
                   }
                }
             }
+            _loading.value = false
+            _error.value = null
          } catch (e: Exception) {
             _loading.value = false
             _error.value = "Failed to fetch data: ${e.message}"

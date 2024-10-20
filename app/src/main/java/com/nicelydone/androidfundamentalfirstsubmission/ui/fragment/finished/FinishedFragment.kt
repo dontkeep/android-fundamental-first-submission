@@ -107,6 +107,7 @@ class FinishedFragment : Fragment() {
       viewModel.finishEventList.observe(viewLifecycleOwner) {
          (binding.finishedRv2.adapter as MultiAdapter).submitList(it.listEvents)
       }
+
       viewModel.error.observe(viewLifecycleOwner) { errorMessage ->
          errorMessage?.let {
             Snackbar.make(binding.root, "No Internet Connection", Snackbar.LENGTH_SHORT).show()
