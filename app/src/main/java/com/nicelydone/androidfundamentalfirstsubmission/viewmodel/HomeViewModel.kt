@@ -1,5 +1,6 @@
 package com.nicelydone.androidfundamentalfirstsubmission.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -65,6 +66,7 @@ class HomeViewModel @Inject constructor(private val eventRepo: EventRepo) : View
                   }
                }
             }
+            Log.d("HomeViewModel", "Data is fetched : $eventResponse")
             _loading.value = false
             _error.value = null
          } catch (e: Exception) {
