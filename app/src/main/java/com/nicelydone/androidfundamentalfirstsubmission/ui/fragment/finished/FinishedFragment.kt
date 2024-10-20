@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import com.nicelydone.androidfundamentalfirstsubmission.databinding.FragmentFinishedBinding
 import com.nicelydone.androidfundamentalfirstsubmission.ui.activity.detail.DetailActivity
 import com.nicelydone.androidfundamentalfirstsubmission.ui.adapter.MultiAdapter
@@ -57,7 +58,7 @@ class FinishedFragment : Fragment() {
          val isNetworkAvailable = isNetworkAvailable()
 
          if (!isNetworkAvailable && !isFavorited) {
-            Toast.makeText(requireContext(), "No Internet Connection and Event Not Favorited", Toast.LENGTH_SHORT).show()
+            Snackbar.make(binding.root, "No Internet Connection & Event not favourited", Snackbar.LENGTH_SHORT).show()
          } else {
             val intent = Intent(requireContext(), DetailActivity::class.java)
             intent.putExtra("id", eventId)
@@ -91,7 +92,7 @@ class FinishedFragment : Fragment() {
       }
       viewModel.error.observe(viewLifecycleOwner){ errorMessage ->
          errorMessage?.let {
-            Toast.makeText(requireContext(), "No Internet Connection", Toast.LENGTH_SHORT).show()
+            Snackbar.make(binding.root, "No Internet Connection", Snackbar.LENGTH_SHORT).show()
          }
       }
    }

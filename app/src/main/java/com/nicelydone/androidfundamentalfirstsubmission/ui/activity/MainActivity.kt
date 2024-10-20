@@ -12,7 +12,10 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import com.nicelydone.androidfundamentalfirstsubmission.R
 import com.nicelydone.androidfundamentalfirstsubmission.databinding.ActivityMainBinding
 import com.nicelydone.androidfundamentalfirstsubmission.ui.fragment.settings.SettingsFragment
+import com.nicelydone.androidfundamentalfirstsubmission.ui.helper.DataStoreManager
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -36,6 +39,7 @@ class MainActivity : AppCompatActivity() {
       setupSmoothBottomMenu()
 
    }
+
    private fun setupSmoothBottomMenu() {
       val popupMenu = PopupMenu(this, null)
       popupMenu.inflate(R.menu.menu)

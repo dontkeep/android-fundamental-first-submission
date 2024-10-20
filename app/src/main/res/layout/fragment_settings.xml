@@ -15,19 +15,19 @@
     android:textStyle="bold"
     android:layout_gravity="center_horizontal"/>
 
-  <com.google.android.material.switchmaterial.SwitchMaterial
+  <com.google.android.material.materialswitch.MaterialSwitch
     android:id="@+id/theme_switch"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="24dp"
-    android:text="Theme Mode" />
+    android:text="@string/theme_mode" />
 
 
-  <com.google.android.material.switchmaterial.SwitchMaterial
+  <com.google.android.material.materialswitch.MaterialSwitch
     android:id="@+id/notification_switch"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="8dp"
-    android:text="Notifications" />
+    android:text="@string/daily_reminder" />
 
 </LinearLayout>
