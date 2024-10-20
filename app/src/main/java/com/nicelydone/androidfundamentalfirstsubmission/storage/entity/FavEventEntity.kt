@@ -7,7 +7,7 @@ import kotlinx.parcelize.Parcelize
 
 @Entity
 @Parcelize
-data class FavEventEntity (
+data class FavEventEntity(
    @PrimaryKey
    var id: Int?,
 
@@ -34,4 +34,4 @@ data class FavEventEntity (
    var registerant: Int? = null,
 
    var isFavorite: Boolean
-): Parcelable
+) : Parcelable

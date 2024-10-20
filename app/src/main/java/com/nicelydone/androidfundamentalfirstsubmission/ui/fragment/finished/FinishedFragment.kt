@@ -4,11 +4,10 @@ import android.content.Intent
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -34,6 +33,7 @@ class FinishedFragment : Fragment() {
       savedInstanceState: Bundle?
    ): View {
       _binding = FragmentFinishedBinding.inflate(inflater, container, false)
+      changeLottieTheme()
       return binding.root
    }
 
@@ -43,13 +43,24 @@ class FinishedFragment : Fragment() {
       detailViewModel = ViewModelProvider(this)[DetailViewModel::class.java]
 
       setupRecyclerView(viewModel)
-      viewModel.loading.observe(viewLifecycleOwner){
-         if (it){
+      viewModel.loading.observe(viewLifecycleOwner) {
+         if (it) {
             showLoading(true)
-         }else{
+         } else {
             showLoading(false)
          }
       }
+   }
+
+   private fun changeLottieTheme() {
+      val isDarkMode =
+         resources.configuration.uiMode and android.content.res.Configuration.UI_MODE_NIGHT_MASK == android.content.res.Configuration.UI_MODE_NIGHT_YES
+      val animationFile = if (isDarkMode) {
+         "loading_white.json"
+      } else {
+         "loading_primary.json"
+      }
+      binding.loading.setAnimation(animationFile)
    }
 
    private fun handleEventClick(eventId: Int) {
@@ -58,7 +69,11 @@ class FinishedFragment : Fragment() {
          val isNetworkAvailable = isNetworkAvailable()
 
          if (!isNetworkAvailable && !isFavorited) {
-            Snackbar.make(binding.root, "No Internet Connection & Event not favourited", Snackbar.LENGTH_SHORT).show()
+            Snackbar.make(
+               binding.root,
+               "No Internet Connection & Event not favourited",
+               Snackbar.LENGTH_SHORT
+            ).show()
          } else {
             val intent = Intent(requireContext(), DetailActivity::class.java)
             intent.putExtra("id", eventId)
@@ -70,7 +85,8 @@ class FinishedFragment : Fragment() {
    private fun isNetworkAvailable(): Boolean {
       val connectivityManager = requireContext().getSystemService(ConnectivityManager::class.java)
       val networkCapabilities = connectivityManager.activeNetwork ?: return false
-      val activeNetwork = connectivityManager.getNetworkCapabilities(networkCapabilities) ?: return false
+      val activeNetwork =
+         connectivityManager.getNetworkCapabilities(networkCapabilities) ?: return false
       return activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||
           activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) ||
           activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)
@@ -81,16 +97,17 @@ class FinishedFragment : Fragment() {
    }
 
    private fun setupRecyclerView(viewModel: HomeViewModel) {
-      binding.finishedRv2.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-      binding.finishedRv2.adapter = MultiAdapter(){ eventId ->
+      binding.finishedRv2.layoutManager =
+         LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+      binding.finishedRv2.adapter = MultiAdapter { eventId ->
          handleEventClick(eventId)
       }
 
       viewModel.getEventList(0)
-      viewModel.finishEventList.observe(viewLifecycleOwner){
+      viewModel.finishEventList.observe(viewLifecycleOwner) {
          (binding.finishedRv2.adapter as MultiAdapter).submitList(it.listEvents)
       }
-      viewModel.error.observe(viewLifecycleOwner){ errorMessage ->
+      viewModel.error.observe(viewLifecycleOwner) { errorMessage ->
          errorMessage?.let {
             Snackbar.make(binding.root, "No Internet Connection", Snackbar.LENGTH_SHORT).show()
          }

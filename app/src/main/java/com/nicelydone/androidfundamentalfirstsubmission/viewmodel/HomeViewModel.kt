@@ -1,22 +1,18 @@
 package com.nicelydone.androidfundamentalfirstsubmission.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nicelydone.androidfundamentalfirstsubmission.connection.response.EventResponse
-import com.nicelydone.androidfundamentalfirstsubmission.connection.retrofit.ApiConfig
 import com.nicelydone.androidfundamentalfirstsubmission.storage.repository.EventRepo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Response
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(private val eventRepo: EventRepo): ViewModel() {
+class HomeViewModel @Inject constructor(private val eventRepo: EventRepo) : ViewModel() {
    private val _activeEventList = MutableLiveData<EventResponse>()
    var activeEventList: LiveData<EventResponse> = _activeEventList
 
@@ -47,7 +43,7 @@ class HomeViewModel @Inject constructor(private val eventRepo: EventRepo): ViewM
       }
    }
 
-   fun getEventList(active: Int, limit: Int = 40){
+   fun getEventList(active: Int, limit: Int = 40) {
       _loading.value = true
       viewModelScope.launch {
          try {
@@ -60,8 +56,10 @@ class HomeViewModel @Inject constructor(private val eventRepo: EventRepo): ViewM
                   if (limit != 40) {
                      _activeEventListSpecificNum.value = eventResponse
                   } else {
-                     _activeEventList.value = eventResponse}
+                     _activeEventList.value = eventResponse
+                  }
                }
+
                0 -> {
                   if (limit != 40) {
                      _finishEventListSpecificNum.value = eventResponse

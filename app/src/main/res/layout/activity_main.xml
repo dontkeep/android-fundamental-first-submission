@@ -25,7 +25,7 @@
     android:layout_height="75dp"
     android:layout_marginEnd="-10dp"
     android:layout_marginBottom="-20dp"
-    android:contentDescription="Setting"
+    android:contentDescription="@string/setting"
     android:backgroundTint="@color/colorPrimaryVariant"
     app:tint="@color/white"
     app:layout_constraintBottom_toTopOf="@id/bottomBar"

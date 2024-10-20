@@ -1,12 +1,8 @@
 package com.nicelydone.androidfundamentalfirstsubmission.ui.activity.detail
 
-import android.content.Context
 import android.content.Intent
-import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
@@ -22,10 +18,8 @@ import com.bumptech.glide.Glide
 import com.nicelydone.androidfundamentalfirstsubmission.R
 import com.nicelydone.androidfundamentalfirstsubmission.connection.response.Event
 import com.nicelydone.androidfundamentalfirstsubmission.databinding.ActivityDetailBinding
-import com.nicelydone.androidfundamentalfirstsubmission.storage.entity.FavEventEntity
 import com.nicelydone.androidfundamentalfirstsubmission.viewmodel.DetailViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
@@ -41,6 +35,8 @@ class DetailActivity : AppCompatActivity() {
       enableEdgeToEdge()
       binding = ActivityDetailBinding.inflate(layoutInflater)
       setContentView(binding.root)
+
+      changeLottieTheme()
 
       val actionBar = supportActionBar
       actionBar?.title = "Event Detail"
@@ -71,7 +67,7 @@ class DetailActivity : AppCompatActivity() {
             append(item.event.category)
          }
 
-         binding.detailCity.text = buildString {
+         binding.cityName.text = buildString {
             append("● ")
             append(item.event.cityName)
          }
@@ -86,13 +82,13 @@ class DetailActivity : AppCompatActivity() {
 
          binding.detailTime.text = item.event.beginTime ?: "No Time"
 
-         binding.eventDesc.text = HtmlCompat.fromHtml(
+         binding.detailDescription.text = HtmlCompat.fromHtml(
             item.event.description ?: "No Description",
             HtmlCompat.FROM_HTML_MODE_LEGACY
          ).toString()
 
-         Glide.with(binding.detailImage.context).load(item.event.imageLogo).centerCrop()
-            .into(binding.detailImage)
+         Glide.with(binding.imageDetail.context).load(item.event.imageLogo).centerCrop()
+            .into(binding.imageDetail)
 
          binding.registerButton.setOnClickListener {
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(item.event.link))
@@ -135,6 +131,17 @@ class DetailActivity : AppCompatActivity() {
       } else {
          binding.favouriteButton.setBackgroundColor(ContextCompat.getColor(this, R.color.grey))
       }
+   }
+
+   private fun changeLottieTheme() {
+      val isDarkMode =
+         resources.configuration.uiMode and android.content.res.Configuration.UI_MODE_NIGHT_MASK == android.content.res.Configuration.UI_MODE_NIGHT_YES
+      val animationFile = if (isDarkMode) {
+         "loading_white.json"
+      } else {
+         "loading_primary.json"
+      }
+      binding.loading.setAnimation(animationFile)
    }
 
    override fun onOptionsItemSelected(item: MenuItem): Boolean {

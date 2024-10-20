@@ -9,8 +9,8 @@
   >
   <com.airbnb.lottie.LottieAnimationView
     android:id="@+id/loading"
-    android:layout_width="0dp"
-    android:layout_height="0dp"
+    android:layout_width="250dp"
+    android:layout_height="250dp"
     app:lottie_autoPlay="true"
     app:lottie_loop="true"
     android:elevation="2dp"
@@ -21,7 +21,6 @@
     app:layout_constraintBottom_toBottomOf="parent"
     />
   <ScrollView
-    android:id="@+id/scroll_view"
     android:layout_width="0dp"
     android:layout_height="0dp"
     app:layout_constraintBottom_toTopOf="@+id/registerButton"
@@ -43,7 +42,7 @@
         app:layout_constraintTop_toTopOf="parent"
         >
         <ImageView
-          android:id="@+id/detail_image"
+          android:id="@+id/image_detail"
           android:layout_width="match_parent"
           android:layout_height="match_parent"
           android:src="@drawable/placeholder"
@@ -95,7 +94,7 @@
         android:textSize="12sp"
         />
       <TextView
-        android:id="@+id/detail_city"
+        android:id="@+id/city_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="12dp"
@@ -152,7 +151,7 @@
         android:textSize="12sp"
         />
       <TextView
-        android:id="@+id/event_desc"
+        android:id="@+id/detail_description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"

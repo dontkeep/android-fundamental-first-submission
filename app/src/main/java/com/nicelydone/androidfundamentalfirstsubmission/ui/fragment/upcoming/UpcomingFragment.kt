@@ -33,6 +33,7 @@ class UpcomingFragment : Fragment() {
       savedInstanceState: Bundle?
    ): View {
       _binding = FragmentUpcomingBinding.inflate(inflater, container, false)
+      changeLottieTheme()
       return binding.root
    }
 
@@ -44,23 +45,34 @@ class UpcomingFragment : Fragment() {
       setupRecyclerView()
 
       viewModel.getEventList(1)
-      viewModel.activeEventList.observe(viewLifecycleOwner){
+      viewModel.activeEventList.observe(viewLifecycleOwner) {
          (binding.upcomingRv2.adapter as MultiAdapter).submitList(it.listEvents)
       }
 
-      viewModel.error.observe(viewLifecycleOwner){ errorMessage ->
+      viewModel.error.observe(viewLifecycleOwner) { errorMessage ->
          errorMessage?.let {
             Snackbar.make(binding.root, "No Internet Connection", Snackbar.LENGTH_SHORT).show()
          }
       }
 
-      viewModel.loading.observe(viewLifecycleOwner){
-         if (it){
+      viewModel.loading.observe(viewLifecycleOwner) {
+         if (it) {
             showLoading(true)
-         }else{
+         } else {
             showLoading(false)
          }
       }
+   }
+
+   private fun changeLottieTheme() {
+      val isDarkMode =
+         resources.configuration.uiMode and android.content.res.Configuration.UI_MODE_NIGHT_MASK == android.content.res.Configuration.UI_MODE_NIGHT_YES
+      val animationFile = if (isDarkMode) {
+         "loading_white.json"
+      } else {
+         "loading_primary.json"
+      }
+      binding.loading.setAnimation(animationFile)
    }
 
    private fun handleEventClick(eventId: Int) {
@@ -81,7 +93,8 @@ class UpcomingFragment : Fragment() {
    private fun isNetworkAvailable(): Boolean {
       val connectivityManager = requireContext().getSystemService(ConnectivityManager::class.java)
       val networkCapabilities = connectivityManager.activeNetwork ?: return false
-      val activeNetwork = connectivityManager.getNetworkCapabilities(networkCapabilities) ?: return false
+      val activeNetwork =
+         connectivityManager.getNetworkCapabilities(networkCapabilities) ?: return false
       return activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||
           activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) ||
           activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)
@@ -92,8 +105,9 @@ class UpcomingFragment : Fragment() {
    }
 
    private fun setupRecyclerView() {
-      binding.upcomingRv2.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-      binding.upcomingRv2.adapter = MultiAdapter(){ eventId ->
+      binding.upcomingRv2.layoutManager =
+         LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+      binding.upcomingRv2.adapter = MultiAdapter { eventId ->
          handleEventClick(eventId)
       }
    }

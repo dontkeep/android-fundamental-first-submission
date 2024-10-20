@@ -3,7 +3,6 @@ package com.nicelydone.androidfundamentalfirstsubmission.ui.helper
 import android.content.Context
 import androidx.work.Worker
 import androidx.work.WorkerParameters
-import com.nicelydone.androidfundamentalfirstsubmission.connection.response.Event
 import com.nicelydone.androidfundamentalfirstsubmission.connection.response.ListEventsItem
 import com.nicelydone.androidfundamentalfirstsubmission.connection.retrofit.ApiConfig
 import kotlinx.coroutines.runBlocking
@@ -11,7 +10,8 @@ import retrofit2.awaitResponse
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class DailyReminderWorker(appContext: Context, workerParams: WorkerParameters) : Worker(appContext, workerParams) {
+class DailyReminderWorker(appContext: Context, workerParams: WorkerParameters) :
+   Worker(appContext, workerParams) {
    override fun doWork(): Result {
       val event = runBlocking { fetchUpcomingEvent() }
       event?.let {

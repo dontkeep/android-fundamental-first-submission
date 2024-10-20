@@ -1,6 +1,5 @@
 package com.nicelydone.androidfundamentalfirstsubmission.hilt
 
-import android.app.Application
 import android.content.Context
 import dagger.Module
 import dagger.Provides
@@ -17,5 +16,4 @@ object AppContextModule {
    fun provideContext(@ApplicationContext context: Context): Context {
       return context
    }
-
 }

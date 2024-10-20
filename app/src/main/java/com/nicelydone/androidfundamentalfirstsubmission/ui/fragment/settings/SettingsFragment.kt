@@ -1,22 +1,24 @@
 package com.nicelydone.androidfundamentalfirstsubmission.ui.fragment.settings
 
-import android.content.DialogInterface
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.graphics.drawable.DrawableCompat.applyTheme
-import androidx.datastore.dataStore
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.materialswitch.MaterialSwitch
+import com.google.android.material.snackbar.Snackbar
 import com.nicelydone.androidfundamentalfirstsubmission.R
 import com.nicelydone.androidfundamentalfirstsubmission.databinding.FragmentSettingsBinding
 import com.nicelydone.androidfundamentalfirstsubmission.ui.helper.DailyReminderWorker
@@ -31,10 +33,31 @@ import javax.inject.Inject
 class SettingsFragment : BottomSheetDialogFragment() {
    private var _binding: FragmentSettingsBinding? = null
    private val binding get() = _binding!!
+   private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
 
    @OptIn(DelicateCoroutinesApi::class)
    @Inject
    lateinit var themeDataStore: DataStoreManager
+
+   override fun onCreate(savedInstanceState: Bundle?) {
+      super.onCreate(savedInstanceState)
+
+      requestPermissionLauncher = registerForActivityResult(
+         ActivityResultContracts.RequestPermission()
+      ) { isGranted: Boolean ->
+         if (isGranted) {
+            val isChecked =
+               binding.root.findViewById<MaterialSwitch>(R.id.notification_switch).isChecked
+            handleReminderToggle(isChecked)
+         } else {
+            Snackbar.make(
+               binding.root,
+               "Permission denied to send notifications",
+               Snackbar.LENGTH_SHORT
+            ).show()
+         }
+      }
+   }
 
    override fun onCreateView(
       inflater: LayoutInflater, container: ViewGroup?,
@@ -80,20 +103,41 @@ class SettingsFragment : BottomSheetDialogFragment() {
       }
 
       reminderSwitch.setOnCheckedChangeListener { _, isChecked ->
-         lifecycleScope.launch {
-            themeDataStore.saveReminderPreference(isChecked)
-            if (isChecked) {
-               Log.d("Schedule Running", " is Checked")
-               scheduleDailyReminder()
+         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+            if (ContextCompat.checkSelfPermission(
+                  requireContext(),
+                  Manifest.permission.POST_NOTIFICATIONS
+               ) != PackageManager.PERMISSION_GRANTED
+            ) {
+               ActivityCompat.requestPermissions(
+                  requireActivity(),
+                  arrayOf(Manifest.permission.POST_NOTIFICATIONS),
+                  NOTIFICATION_PERMISSION_REQUEST_CODE
+               )
             } else {
-               Log.d("Schedule Running", " is Not Checked")
-               cancelDailyReminder()
+               handleReminderToggle(isChecked)
             }
+         } else {
+            handleReminderToggle(isChecked)
          }
       }
    }
 
-   private fun scheduleDailyReminder(){
+   @OptIn(DelicateCoroutinesApi::class)
+   private fun handleReminderToggle(isChecked: Boolean) {
+      lifecycleScope.launch {
+         themeDataStore.saveReminderPreference(isChecked)
+         if (isChecked) {
+            Snackbar.make(binding.root, "Daily Reminder Activated", Snackbar.LENGTH_SHORT).show()
+            scheduleDailyReminder()
+         } else {
+            Snackbar.make(binding.root, "Daily Reminder Deactivated", Snackbar.LENGTH_SHORT).show()
+            cancelDailyReminder()
+         }
+      }
+   }
+
+   private fun scheduleDailyReminder() {
       val workRequest = PeriodicWorkRequestBuilder<DailyReminderWorker>(1, TimeUnit.DAYS)
          .build()
       WorkManager.getInstance(requireContext()).enqueueUniquePeriodicWork(
@@ -101,10 +145,9 @@ class SettingsFragment : BottomSheetDialogFragment() {
          ExistingPeriodicWorkPolicy.UPDATE,
          workRequest
       )
-      Log.d("Schedule Running", "Daily Reminder Scheduled")
    }
 
-   private fun cancelDailyReminder(){
+   private fun cancelDailyReminder() {
       WorkManager.getInstance(requireContext()).cancelUniqueWork("DailyReminder")
    }
 
@@ -124,5 +167,6 @@ class SettingsFragment : BottomSheetDialogFragment() {
 
    companion object {
       const val TAG = "SettingsBottomSheet"
+      private const val NOTIFICATION_PERMISSION_REQUEST_CODE = 1001
    }
 }

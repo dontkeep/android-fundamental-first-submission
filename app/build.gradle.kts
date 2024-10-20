@@ -67,15 +67,15 @@ dependencies {
    androidTestImplementation(libs.androidx.junit)
    androidTestImplementation(libs.androidx.espresso.core)
 
-   implementation("androidx.room:room-runtime:2.6.1")
-   ksp("androidx.room:room-compiler:2.6.1")
-   implementation("androidx.room:room-ktx:2.6.1")
+   implementation(libs.androidx.room.runtime)
+   ksp(libs.androidx.room.compiler)
+   implementation(libs.androidx.room.ktx)
 
-   implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1")
+   implementation(libs.androidx.lifecycle.viewmodel.ktx)
 
-   implementation("com.google.dagger:hilt-android:2.51.1")
-   ksp("com.google.dagger:hilt-android-compiler:2.51.1")
+   implementation(libs.hilt.android)
+   ksp(libs.hilt.android.compiler)
 
-   implementation("androidx.datastore:datastore-preferences:1.1.1")
+   implementation(libs.androidx.datastore.preferences)
 
 }

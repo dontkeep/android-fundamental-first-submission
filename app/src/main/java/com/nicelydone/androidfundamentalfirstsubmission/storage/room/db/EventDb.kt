@@ -8,14 +8,15 @@ import com.nicelydone.androidfundamentalfirstsubmission.storage.entity.FavEventE
 import com.nicelydone.androidfundamentalfirstsubmission.storage.room.dao.EventDao
 
 @Database(entities = [FavEventEntity::class], version = 1, exportSchema = false)
-abstract class EventDb: RoomDatabase() {
+abstract class EventDb : RoomDatabase() {
    abstract fun getEventDao(): EventDao
-   companion object{
+
+   companion object {
       @Volatile
       private var INSTANCE: EventDb? = null
 
       @JvmStatic
-      fun getInstance(context: Context): EventDb{
+      fun getInstance(context: Context): EventDb {
          if (INSTANCE == null) {
             synchronized(EventDb::class.java) {
                INSTANCE =

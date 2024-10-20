@@ -12,10 +12,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import com.nicelydone.androidfundamentalfirstsubmission.R
 import com.nicelydone.androidfundamentalfirstsubmission.databinding.ActivityMainBinding
 import com.nicelydone.androidfundamentalfirstsubmission.ui.fragment.settings.SettingsFragment
-import com.nicelydone.androidfundamentalfirstsubmission.ui.helper.DataStoreManager
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -32,7 +29,8 @@ class MainActivity : AppCompatActivity() {
          v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
          insets
       }
-      val navHostFragment = supportFragmentManager.findFragmentById(R.id.container) as NavHostFragment
+      val navHostFragment =
+         supportFragmentManager.findFragmentById(R.id.container) as NavHostFragment
       navController = navHostFragment.navController
       supportActionBar?.hide()
       setupActionBarWithNavController(navController)
@@ -47,12 +45,12 @@ class MainActivity : AppCompatActivity() {
       binding.bottomBar.setupWithNavController(menu, navController)
 
       binding.bottomBar.setOnItemSelectedListener { position ->
-         when(position) {
-          0 -> navController.navigate(R.id.homeFragment)
-          1 -> navController.navigate(R.id.upcomingFragment)
-          2 -> navController.navigate(R.id.finishedFragment)
-          3 -> navController.navigate(R.id.favFragment)
-          else -> navController.navigate(R.id.homeFragment)
+         when (position) {
+            0 -> navController.navigate(R.id.homeFragment)
+            1 -> navController.navigate(R.id.upcomingFragment)
+            2 -> navController.navigate(R.id.finishedFragment)
+            3 -> navController.navigate(R.id.favFragment)
+            else -> navController.navigate(R.id.homeFragment)
          }
       }
 

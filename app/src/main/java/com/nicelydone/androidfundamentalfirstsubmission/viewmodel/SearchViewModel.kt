@@ -1,19 +1,14 @@
 package com.nicelydone.androidfundamentalfirstsubmission.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nicelydone.androidfundamentalfirstsubmission.connection.response.EventResponse
-import com.nicelydone.androidfundamentalfirstsubmission.connection.retrofit.ApiConfig
 import com.nicelydone.androidfundamentalfirstsubmission.storage.repository.EventRepo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import javax.inject.Inject
 
 @HiltViewModel
@@ -31,7 +26,7 @@ class SearchViewModel @Inject constructor(private val eventRepo: EventRepo) : Vi
       _loading.value = false
    }
 
-   fun getResult(query: String){
+   fun getResult(query: String) {
       _loading.value = true
       viewModelScope.launch {
          try {
@@ -42,7 +37,6 @@ class SearchViewModel @Inject constructor(private val eventRepo: EventRepo) : Vi
          } catch (e: Exception) {
             _loading.value = false
             _error.value = "Failed to search events: ${e.message}"
-            Log.e("SearchViewModel", "Error searching events: ${e.message}", e)
          }
       }
    }

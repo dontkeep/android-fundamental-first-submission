@@ -58,7 +58,7 @@
       app:layout_constraintTop_toTopOf="@+id/card_image"
       />
     <TextView
-      android:id="@+id/item_summary"
+      android:id="@+id/summary_vertical"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:layout_marginTop="8dp"

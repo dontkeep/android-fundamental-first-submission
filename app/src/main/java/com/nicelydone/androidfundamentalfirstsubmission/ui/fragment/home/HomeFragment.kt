@@ -1,14 +1,13 @@
 package com.nicelydone.androidfundamentalfirstsubmission.ui.fragment.home
 
-import android.content.Context
 import android.content.Intent
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -36,57 +35,70 @@ class HomeFragment : Fragment() {
       savedInstanceState: Bundle?
    ): View {
       _binding = FragmentHomeBinding.inflate(inflater, container, false)
+      changeLottieTheme()
       return binding.root
    }
 
    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
       super.onViewCreated(view, savedInstanceState)
-
       setupRecyclerView()
       viewModel = ViewModelProvider(this)[HomeViewModel::class.java]
       detailViewModel = ViewModelProvider(this)[DetailViewModel::class.java]
 
       viewModel.fetchEvents()
 
-      viewModel.activeEventListSpecificNum.observe(viewLifecycleOwner){
+      viewModel.activeEventListSpecificNum.observe(viewLifecycleOwner) {
          (binding.upcomingRv.adapter as UpcomingAdapter).submitList(it.listEvents)
       }
-      viewModel.finishEventListSpecificNum.observe(viewLifecycleOwner){
+      viewModel.finishEventListSpecificNum.observe(viewLifecycleOwner) {
          (binding.finishedRv.adapter as MultiAdapter).submitList(it.listEvents)
       }
 
-      viewModel.loading.observe(viewLifecycleOwner){
-         if (it){
+      viewModel.loading.observe(viewLifecycleOwner) {
+         if (it) {
             showLoading(true)
-         }else{
+         } else {
             showLoading(false)
          }
       }
 
-      viewModel.error.observe(viewLifecycleOwner){ errorMessage ->
+      viewModel.error.observe(viewLifecycleOwner) { errorMessage ->
          errorMessage?.let {
             Snackbar.make(binding.root, "No Internet Connection", Snackbar.LENGTH_SHORT).show()
          }
       }
-
       setupSearch()
+   }
+
+   private fun changeLottieTheme() {
+      val isDarkMode =
+         resources.configuration.uiMode and android.content.res.Configuration.UI_MODE_NIGHT_MASK == android.content.res.Configuration.UI_MODE_NIGHT_YES
+      val animationFile = if (isDarkMode) {
+         "loading_white.json"
+      } else {
+         "loading_primary.json"
+      }
+      binding.loading.setAnimation(animationFile)
    }
 
    private fun isNetworkAvailable(): Boolean {
       val connectivityManager = requireContext().getSystemService(ConnectivityManager::class.java)
       val networkCapabilities = connectivityManager.activeNetwork ?: return false
-      val activeNetwork = connectivityManager.getNetworkCapabilities(networkCapabilities) ?: return false
+      val activeNetwork =
+         connectivityManager.getNetworkCapabilities(networkCapabilities) ?: return false
       return activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||
           activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) ||
           activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)
    }
 
-   private fun setupRecyclerView(){
-      binding.finishedRv.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-      binding.finishedRv.adapter = MultiAdapter(){ eventId ->
+   private fun setupRecyclerView() {
+      binding.finishedRv.layoutManager =
+         LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+      binding.finishedRv.adapter = MultiAdapter { eventId ->
          handleEventClick(eventId)
       }
-      binding.upcomingRv.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+      binding.upcomingRv.layoutManager =
+         LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
       binding.upcomingRv.adapter = UpcomingAdapter { eventId ->
          handleEventClick(eventId)
       }
@@ -99,7 +111,11 @@ class HomeFragment : Fragment() {
 
          if (!isNetworkAvailable && !isFavorited) {
 
-            Snackbar.make(binding.root, "No Internet Connection & Event not favourited", Snackbar.LENGTH_SHORT).show()
+            Snackbar.make(
+               binding.root,
+               "No Internet Connection & Event not favourited",
+               Snackbar.LENGTH_SHORT
+            ).show()
          } else {
             val intent = Intent(requireContext(), DetailActivity::class.java)
             intent.putExtra("id", eventId)
@@ -108,7 +124,7 @@ class HomeFragment : Fragment() {
       }
    }
 
-   private fun setupSearch(){
+   private fun setupSearch() {
       binding.searchView.setupWithSearchBar(binding.searchBar)
       binding.searchView.editText.setOnEditorActionListener { _, _, _ ->
          binding.searchBar.setText(binding.searchView.text)

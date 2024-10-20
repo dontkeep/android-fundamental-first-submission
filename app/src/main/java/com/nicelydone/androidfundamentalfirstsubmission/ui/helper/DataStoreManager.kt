@@ -7,7 +7,6 @@ import androidx.datastore.preferences.preferencesDataStore
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -59,5 +58,4 @@ class DataStoreManager @Inject constructor(@ApplicationContext context: Context)
       val THEME_KEY = booleanPreferencesKey("theme_key")
       val REMINDER_KEY = booleanPreferencesKey("reminder_key")
    }
-
 }

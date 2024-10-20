@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltAndroidApp
-class MyApplication: Application() {
+class MyApplication : Application() {
    @OptIn(DelicateCoroutinesApi::class)
    @Inject
    lateinit var dataStoreManager: DataStoreManager

@@ -1,10 +1,6 @@
 package com.nicelydone.androidfundamentalfirstsubmission.viewmodel
 
 import android.app.Application
-import android.content.Context
-import android.graphics.Bitmap
-import android.os.Environment
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -19,13 +15,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
 import javax.inject.Inject
+
 @HiltViewModel
-class DetailViewModel @Inject constructor(private val eventRepo: EventRepo, private val application: Application) : AndroidViewModel(application) {
+class DetailViewModel @Inject constructor(
+   private val eventRepo: EventRepo,
+   private val application: Application
+) : AndroidViewModel(application) {
    private val _detailResult = MutableLiveData<DetailEventResponse>()
    var detailResult: LiveData<DetailEventResponse> = _detailResult
 
@@ -46,8 +42,6 @@ class DetailViewModel @Inject constructor(private val eventRepo: EventRepo, priv
    private fun deleteEventById(eventId: Int) {
       viewModelScope.launch(Dispatchers.IO) {
          eventRepo.deleteById(eventId)
-
-         Log.d("DetailViewModel", "Deleted event with ID: $eventId")
       }
    }
 
@@ -72,7 +66,6 @@ class DetailViewModel @Inject constructor(private val eventRepo: EventRepo, priv
                   .get()
 
                val imagePath = eventRepo.saveBitmapToFile(bitmap, "event_image_${it.id}")
-               Log.d("DetailViewModel", "Image path: $imagePath")
 
                val favEventEntity = FavEventEntity(
                   id = it.id,
@@ -91,9 +84,7 @@ class DetailViewModel @Inject constructor(private val eventRepo: EventRepo, priv
                )
 
                eventRepo.insert(favEventEntity)
-               Log.d("DetailViewModel", "Event inserted: $favEventEntity")
-            } catch (e: Exception) {
-               Log.e("DetailViewModel", "Error saving event: ${e.message}", e)
+            } catch (_: Exception) {
             }
          }
       }
@@ -103,12 +94,9 @@ class DetailViewModel @Inject constructor(private val eventRepo: EventRepo, priv
       viewModelScope.launch {
          _loading.value = true
          val isFavorited = eventRepo.isEventFavorite(id).first()
-         Log.d("DetailViewModel", "isEventFavorite: $isFavorited")
          eventRepo.getEventDetails(id, isFavorited).collect { eventDetails ->
-            Log.d("DetailViewModel", "getEventDetails: $eventDetails")
             when (eventDetails) {
                is FavEventEntity -> {
-                  Log.d("DetailViewModel", "getEventDetails: $eventDetails")
                   val detailEvent = DetailEventResponse(
                      error = false,
                      message = null,
@@ -131,8 +119,7 @@ class DetailViewModel @Inject constructor(private val eventRepo: EventRepo, priv
                }
 
                is DetailEventResponse -> {
-                     Log.d("DetailViewModel", "getEventDetails: $eventDetails")
-                     _detailResult.value = eventDetails
+                  _detailResult.value = eventDetails
                }
             }
             _loading.value = false
