@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.nicelydone.androidfundamentalfirstsubmission.R
 import com.nicelydone.androidfundamentalfirstsubmission.databinding.ActivitySearchResultBinding
 import com.nicelydone.androidfundamentalfirstsubmission.ui.activity.detail.DetailActivity
 import com.nicelydone.androidfundamentalfirstsubmission.ui.adapter.MultiAdapter
@@ -49,7 +50,14 @@ class SearchResultActivity : AppCompatActivity() {
       }
 
       viewModel.searchResult.observe(this) {
-         (binding.searchRv.adapter as MultiAdapter).submitList(it.listEvents)
+         if (it.listEvents?.isEmpty() == true) {
+            binding.emptyTextResult.visibility = View.VISIBLE
+            binding.emptyTextResult.setText(R.string.no_result)
+            binding.searchRv.visibility = View.INVISIBLE
+         } else {
+            binding.emptyTextResult.visibility = View.INVISIBLE
+            (binding.searchRv.adapter as MultiAdapter).submitList(it.listEvents)
+         }
       }
       viewModel.loading.observe(this) {
          binding.loading.visibility = if (it) View.VISIBLE else View.INVISIBLE
