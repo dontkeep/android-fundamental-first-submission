@@ -1,6 +1,5 @@
 package com.nicelydone.androidfundamentalfirstsubmission.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -8,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import com.nicelydone.androidfundamentalfirstsubmission.connection.response.EventResponse
 import com.nicelydone.androidfundamentalfirstsubmission.storage.repository.EventRepo
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -44,20 +42,17 @@ class HomeViewModel @Inject constructor(private val eventRepo: EventRepo) : View
 
    fun fetchTwoEvents() {
       viewModelScope.launch {
-         Log.d("HomeViewModel", "Loading is up : ${_loading.value}")
          _loading.value = true
          _loading2.value = true
 
          try {
             val event1Response = eventRepo.getAllEventsFromApi(active = 1, limit = 5).first()
             _activeEventListSpecificNum.value = event1Response
-            Log.d("HomeViewModel", "First Loading is down : ${_loading.value}")
             _loading.value = false
 
             val event2Response = eventRepo.getAllEventsFromApi(active = 0, limit = 5).first()
             _finishEventListSpecificNum.value = event2Response
          } finally {
-            Log.d("HomeViewModel", "Second Loading is down : ${_loading2.value}")
             _loading2.value = false
          }
       }
@@ -86,8 +81,6 @@ class HomeViewModel @Inject constructor(private val eventRepo: EventRepo) : View
                   }
                }
             }
-            Log.d("HomeViewModel", "Data is fetched : $eventResponse")
-            Log.d("HomeViewModel", "Loading is down : ${_loading.value}")
             _loading.value = false
             _error.value = null
          } catch (e: Exception) {
