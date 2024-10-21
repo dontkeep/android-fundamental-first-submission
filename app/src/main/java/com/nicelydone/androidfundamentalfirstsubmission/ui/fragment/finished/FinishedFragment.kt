@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -111,7 +112,7 @@ class FinishedFragment : Fragment() {
 
       viewModel.error.observe(viewLifecycleOwner) { errorMessage ->
          errorMessage?.let {
-            Snackbar.make(binding.root, "No Internet Connection", Snackbar.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "No Internet Connection", Toast.LENGTH_SHORT).show()
          }
       }
    }

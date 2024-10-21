@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -45,7 +46,7 @@ class HomeFragment : Fragment() {
       viewModel = ViewModelProvider(this)[HomeViewModel::class.java]
       detailViewModel = ViewModelProvider(this)[DetailViewModel::class.java]
 
-      viewModel.fetchEvents()
+      viewModel.fetchTwoEvents()
 
       viewModel.activeEventListSpecificNum.observe(viewLifecycleOwner) {
          (binding.upcomingRv.adapter as UpcomingAdapter).submitList(it.listEvents)
@@ -54,20 +55,32 @@ class HomeFragment : Fragment() {
          (binding.finishedRv.adapter as MultiAdapter).submitList(it.listEvents)
       }
 
-      viewModel.loading.observe(viewLifecycleOwner) {
-         if (it) {
-            showLoading(true)
-         } else {
-            showLoading(false)
-         }
-      }
+      setupLoading()
 
       viewModel.error.observe(viewLifecycleOwner) { errorMessage ->
-         errorMessage?.let {
-            Snackbar.make(binding.root, "No Internet Connection", Snackbar.LENGTH_SHORT).show()
+         if (errorMessage != null) {
+            Toast.makeText(requireContext(), "No Internet Connection", Toast.LENGTH_SHORT).show()
          }
       }
       setupSearch()
+   }
+
+   private fun setupLoading(){
+      viewModel.loading.observe(viewLifecycleOwner) {
+         if (it) {
+            showLoadingUpcoming(true)
+         } else {
+            showLoadingUpcoming(false)
+         }
+      }
+
+      viewModel.loading2.observe(viewLifecycleOwner) {
+         if (it) {
+            showLoadingFinished(true)
+         } else {
+            showLoadingFinished(false)
+         }
+      }
    }
 
    private fun changeLottieTheme() {
@@ -137,10 +150,14 @@ class HomeFragment : Fragment() {
       }
    }
 
-   private fun showLoading(isLoading: Boolean) {
+   private fun showLoadingUpcoming(isLoading: Boolean) {
       binding.upcomingRv.visibility = if (isLoading) View.INVISIBLE else View.VISIBLE
-      binding.finishedRv.visibility = if (isLoading) View.INVISIBLE else View.VISIBLE
       binding.loading.visibility = if (isLoading) View.VISIBLE else View.INVISIBLE
+   }
+
+   private fun showLoadingFinished(isLoading: Boolean) {
+      binding.finishedRv.visibility = if (isLoading) View.INVISIBLE else View.VISIBLE
+      binding.loading2.visibility = if (isLoading) View.VISIBLE else View.INVISIBLE
    }
 
    override fun onDestroyView() {
