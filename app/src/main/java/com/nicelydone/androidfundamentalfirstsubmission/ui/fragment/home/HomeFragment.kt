@@ -138,6 +138,8 @@ class HomeFragment : Fragment() {
    }
 
    private fun showLoading(isLoading: Boolean) {
+      binding.upcomingRv.visibility = if (isLoading) View.INVISIBLE else View.VISIBLE
+      binding.finishedRv.visibility = if (isLoading) View.INVISIBLE else View.VISIBLE
       binding.loading.visibility = if (isLoading) View.VISIBLE else View.INVISIBLE
    }
 

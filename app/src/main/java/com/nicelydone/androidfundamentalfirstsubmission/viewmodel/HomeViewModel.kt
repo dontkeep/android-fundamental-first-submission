@@ -37,10 +37,8 @@ class HomeViewModel @Inject constructor(private val eventRepo: EventRepo) : View
    }
 
    fun fetchEvents() {
-      viewModelScope.launch {
-         launch { getEventList(1, 5) }
-         launch { getEventList(0, 5) }
-      }
+      getEventList(1, 5)
+      getEventList(0, 5)
    }
 
    fun getEventList(active: Int, limit: Int = 20) {
