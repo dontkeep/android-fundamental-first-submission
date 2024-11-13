@@ -2,21 +2,21 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
   <item
     android:id="@+id/homeFragment"
-    android:title="@string/home"
+    android:title=""
     android:icon="@drawable/icon_home_state"/>
 
   <item
     android:id="@+id/upcomingFragment"
-    android:title="@string/upcoming"
+    android:title=""
     android:icon="@drawable/icon_upcoming_state"/>
 
   <item
     android:id="@+id/finishedFragment"
-    android:title="@string/finished"
+    android:title=""
     android:icon="@drawable/icon_finished_state"/>
 
   <item
     android:id="@+id/favFragment"
-    android:title="@string/favourite"
+    android:title=""
     android:icon="@drawable/baseline_favorite_border_24"/>
 </menu>

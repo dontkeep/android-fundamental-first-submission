@@ -1,7 +1,7 @@
 package com.nicelydone.androidfundamentalfirstsubmission.hilt
 
-import com.nicelydone.androidfundamentalfirstsubmission.connection.retrofit.ApiConfig
-import com.nicelydone.androidfundamentalfirstsubmission.connection.retrofit.ApiService
+import com.nicelydone.androidfundamentalfirstsubmission.model.connection.retrofit.ApiConfig
+import com.nicelydone.androidfundamentalfirstsubmission.model.connection.retrofit.ApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

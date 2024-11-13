@@ -6,10 +6,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.bumptech.glide.Glide
-import com.nicelydone.androidfundamentalfirstsubmission.connection.response.DetailEventResponse
-import com.nicelydone.androidfundamentalfirstsubmission.connection.response.Event
-import com.nicelydone.androidfundamentalfirstsubmission.storage.entity.FavEventEntity
-import com.nicelydone.androidfundamentalfirstsubmission.storage.repository.EventRepo
+import com.nicelydone.androidfundamentalfirstsubmission.model.connection.response.DetailEventResponse
+import com.nicelydone.androidfundamentalfirstsubmission.model.connection.response.Event
+import com.nicelydone.androidfundamentalfirstsubmission.model.storage.entity.FavEventEntity
+import com.nicelydone.androidfundamentalfirstsubmission.model.storage.repository.EventRepo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow

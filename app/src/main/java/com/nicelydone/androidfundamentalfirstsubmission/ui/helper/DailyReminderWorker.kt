@@ -3,8 +3,8 @@ package com.nicelydone.androidfundamentalfirstsubmission.ui.helper
 import android.content.Context
 import androidx.work.Worker
 import androidx.work.WorkerParameters
-import com.nicelydone.androidfundamentalfirstsubmission.connection.response.ListEventsItem
-import com.nicelydone.androidfundamentalfirstsubmission.connection.retrofit.ApiConfig
+import com.nicelydone.androidfundamentalfirstsubmission.model.connection.response.ListEventsItem
+import com.nicelydone.androidfundamentalfirstsubmission.model.connection.retrofit.ApiConfig
 import kotlinx.coroutines.runBlocking
 import retrofit2.awaitResponse
 import java.text.SimpleDateFormat

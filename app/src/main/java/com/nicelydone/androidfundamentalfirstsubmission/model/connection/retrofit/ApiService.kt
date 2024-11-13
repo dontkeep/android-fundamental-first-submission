@@ -1,7 +1,7 @@
-package com.nicelydone.androidfundamentalfirstsubmission.connection.retrofit
+package com.nicelydone.androidfundamentalfirstsubmission.model.connection.retrofit
 
-import com.nicelydone.androidfundamentalfirstsubmission.connection.response.DetailEventResponse
-import com.nicelydone.androidfundamentalfirstsubmission.connection.response.EventResponse
+import com.nicelydone.androidfundamentalfirstsubmission.model.connection.response.DetailEventResponse
+import com.nicelydone.androidfundamentalfirstsubmission.model.connection.response.EventResponse
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path

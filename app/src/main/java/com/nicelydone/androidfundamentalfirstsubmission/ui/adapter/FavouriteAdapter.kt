@@ -11,7 +11,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.nicelydone.androidfundamentalfirstsubmission.R
 import com.nicelydone.androidfundamentalfirstsubmission.databinding.ItemVerticalBinding
-import com.nicelydone.androidfundamentalfirstsubmission.storage.entity.FavEventEntity
+import com.nicelydone.androidfundamentalfirstsubmission.model.storage.entity.FavEventEntity
 import com.nicelydone.androidfundamentalfirstsubmission.ui.activity.detail.DetailActivity
 
 class FavouriteAdapter : ListAdapter<FavEventEntity, FavouriteAdapter.ViewHolder>(DIFF_CALLBACK) {
@@ -59,8 +59,8 @@ class FavouriteAdapter : ListAdapter<FavEventEntity, FavouriteAdapter.ViewHolder
          }
 
          override fun areContentsTheSame(
-            oldItem: FavEventEntity,
-            newItem: FavEventEntity
+             oldItem: FavEventEntity,
+             newItem: FavEventEntity
          ): Boolean {
             return oldItem == newItem
          }

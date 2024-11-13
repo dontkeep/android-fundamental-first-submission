@@ -1,6 +1,6 @@
-package com.nicelydone.androidfundamentalfirstsubmission.storage.repository
+package com.nicelydone.androidfundamentalfirstsubmission.model.storage.repository
 
-import com.nicelydone.androidfundamentalfirstsubmission.storage.entity.FavEventEntity
+import com.nicelydone.androidfundamentalfirstsubmission.model.storage.entity.FavEventEntity
 import kotlinx.coroutines.flow.Flow
 
 interface EventInterfaceRepo {

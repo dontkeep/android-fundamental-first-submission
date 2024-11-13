@@ -1,4 +1,4 @@
-package com.nicelydone.androidfundamentalfirstsubmission.connection.retrofit
+package com.nicelydone.androidfundamentalfirstsubmission.model.connection.retrofit
 
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor

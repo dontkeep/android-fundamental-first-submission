@@ -1,10 +1,10 @@
-package com.nicelydone.androidfundamentalfirstsubmission.storage.room.dao
+package com.nicelydone.androidfundamentalfirstsubmission.model.storage.room.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.nicelydone.androidfundamentalfirstsubmission.storage.entity.FavEventEntity
+import com.nicelydone.androidfundamentalfirstsubmission.model.storage.entity.FavEventEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao

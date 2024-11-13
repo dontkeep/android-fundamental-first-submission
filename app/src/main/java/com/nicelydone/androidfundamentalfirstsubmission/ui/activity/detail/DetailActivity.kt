@@ -1,6 +1,8 @@
 package com.nicelydone.androidfundamentalfirstsubmission.ui.activity.detail
 
 import android.content.Intent
+import android.graphics.drawable.Drawable
+import android.graphics.drawable.LayerDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.view.MenuItem
@@ -17,7 +19,7 @@ import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.nicelydone.androidfundamentalfirstsubmission.R
-import com.nicelydone.androidfundamentalfirstsubmission.connection.response.Event
+import com.nicelydone.androidfundamentalfirstsubmission.model.connection.response.Event
 import com.nicelydone.androidfundamentalfirstsubmission.databinding.ActivityDetailBinding
 import com.nicelydone.androidfundamentalfirstsubmission.viewmodel.DetailViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -42,6 +44,7 @@ class DetailActivity : AppCompatActivity() {
       val actionBar = supportActionBar
       actionBar?.title = "Event Detail"
       actionBar?.setDisplayHomeAsUpEnabled(true)
+
 
       ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
          val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())

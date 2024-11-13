@@ -1,13 +1,13 @@
-package com.nicelydone.androidfundamentalfirstsubmission.storage.repository
+package com.nicelydone.androidfundamentalfirstsubmission.model.storage.repository
 
 import android.app.Application
 import android.graphics.Bitmap
 import android.os.Environment
-import com.nicelydone.androidfundamentalfirstsubmission.connection.response.DetailEventResponse
-import com.nicelydone.androidfundamentalfirstsubmission.connection.response.EventResponse
-import com.nicelydone.androidfundamentalfirstsubmission.connection.retrofit.ApiService
-import com.nicelydone.androidfundamentalfirstsubmission.storage.entity.FavEventEntity
-import com.nicelydone.androidfundamentalfirstsubmission.storage.room.dao.EventDao
+import com.nicelydone.androidfundamentalfirstsubmission.model.connection.response.DetailEventResponse
+import com.nicelydone.androidfundamentalfirstsubmission.model.connection.response.EventResponse
+import com.nicelydone.androidfundamentalfirstsubmission.model.connection.retrofit.ApiService
+import com.nicelydone.androidfundamentalfirstsubmission.model.storage.entity.FavEventEntity
+import com.nicelydone.androidfundamentalfirstsubmission.model.storage.room.dao.EventDao
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -45,12 +45,12 @@ class EventRepo @Inject constructor(
          outputStream = FileOutputStream(file)
          bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
          outputStream.flush()
-         file.absolutePath // Return the saved file path
+         file.absolutePath
       } catch (e: IOException) {
          e.printStackTrace()
-         null // Return null in case of an error
+         null
       } finally {
-         outputStream?.close() // Close the output stream
+         outputStream?.close()
       }
    }
 

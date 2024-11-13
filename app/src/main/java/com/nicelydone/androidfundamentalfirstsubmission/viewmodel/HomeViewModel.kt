@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.nicelydone.androidfundamentalfirstsubmission.connection.response.EventResponse
-import com.nicelydone.androidfundamentalfirstsubmission.storage.repository.EventRepo
+import com.nicelydone.androidfundamentalfirstsubmission.model.connection.response.EventResponse
+import com.nicelydone.androidfundamentalfirstsubmission.model.storage.repository.EventRepo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch

@@ -1,4 +1,4 @@
-package com.nicelydone.androidfundamentalfirstsubmission.storage.entity
+package com.nicelydone.androidfundamentalfirstsubmission.model.storage.entity
 
 import android.os.Parcelable
 import androidx.room.Entity

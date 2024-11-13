@@ -123,7 +123,6 @@ class HomeFragment : Fragment() {
          val isNetworkAvailable = isNetworkAvailable()
 
          if (!isNetworkAvailable && !isFavorited) {
-
             Snackbar.make(
                binding.root,
                "No Internet Connection & Event not favourited",

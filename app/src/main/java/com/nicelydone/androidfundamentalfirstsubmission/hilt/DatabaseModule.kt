@@ -2,8 +2,8 @@ package com.nicelydone.androidfundamentalfirstsubmission.hilt
 
 import android.app.Application
 import androidx.room.Room
-import com.nicelydone.androidfundamentalfirstsubmission.storage.room.dao.EventDao
-import com.nicelydone.androidfundamentalfirstsubmission.storage.room.db.EventDb
+import com.nicelydone.androidfundamentalfirstsubmission.model.storage.room.dao.EventDao
+import com.nicelydone.androidfundamentalfirstsubmission.model.storage.room.db.EventDb
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

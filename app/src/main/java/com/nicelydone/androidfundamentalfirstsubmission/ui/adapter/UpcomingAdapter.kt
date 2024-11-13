@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.nicelydone.androidfundamentalfirstsubmission.R
-import com.nicelydone.androidfundamentalfirstsubmission.connection.response.ListEventsItem
+import com.nicelydone.androidfundamentalfirstsubmission.model.connection.response.ListEventsItem
 import com.nicelydone.androidfundamentalfirstsubmission.databinding.ItemHorizontalBinding
 
 class UpcomingAdapter(private val onEventClick: (Int) -> Unit) :
@@ -48,8 +48,8 @@ class UpcomingAdapter(private val onEventClick: (Int) -> Unit) :
          }
 
          override fun areContentsTheSame(
-            oldItem: ListEventsItem,
-            newItem: ListEventsItem
+             oldItem: ListEventsItem,
+             newItem: ListEventsItem
          ): Boolean {
             return oldItem == newItem
          }

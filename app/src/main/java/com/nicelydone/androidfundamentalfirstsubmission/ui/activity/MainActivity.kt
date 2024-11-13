@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity() {
       popupMenu.inflate(R.menu.menu)
       val menu = popupMenu.menu
       binding.bottomBar.setupWithNavController(menu, navController)
-
+      binding.bottomBar.itemIconTintActive = getColor(R.color.colorSurfaceDark)
       binding.bottomBar.setOnItemSelectedListener { position ->
          when (position) {
             0 -> navController.navigate(R.id.homeFragment)
